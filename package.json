@@ -13,8 +13,8 @@
   "commands": [
     {
       "name": "rename-files",
-      "title": "Rename Files",
-      "subtitle": "Rename selected files",
+      "title": "Rename Selected Files",
+      "subtitle": "Rename selected files in Finder",
       "description": "Perform a find and replace action on the selected files to rename them.",
       "mode": "view"
     }
