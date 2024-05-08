@@ -57,11 +57,11 @@ export default function RenameFiles() {
     getSelectedFiles();
   }, []);
 
-  const updateFiles = () => {
+  const updateFiles = (findStr: string, replaceStr: string) => {
     if (files && findText && replaceText) {
       setFiles(
         files.map((file) => {
-          const newName = file.name.replace(new RegExp(findText, "g"), replaceText);
+          const newName = file.name.replace(new RegExp(findStr, "g"), replaceStr);
           return {
             ...file,
             newName,
@@ -81,7 +81,7 @@ export default function RenameFiles() {
 
       setFindText(values.find);
       setReplaceText(values.replace);
-      updateFiles();
+      updateFiles(values.find, values.replace);
 
       const totalFiles = files.length;
       let completedFiles = 0;
@@ -133,22 +133,28 @@ export default function RenameFiles() {
         title=""
         text="Standard search and replace, as well as simple regular expressions, are allowed."
       />
-      <Form.TextArea
+      <Form.TextField
         id="find"
         title="Find"
         placeholder="Text to find"
         value={findText}
         onChange={setFindText}
-        onBlur={updateFiles}
+        onBlur={(event) => {
+          updateFiles(event.target.value!, replaceText);
+        }}
       />
-      <Form.TextArea
+      <Form.TextField
         id="replace"
         title="Replace"
         placeholder="Text to replace"
         value={replaceText}
-        onChange={setReplaceText}
-        onBlur={() => {
-          updateFiles();
+        onChange={(newValue: string) => {
+          setReplaceText(newValue);
+          console.log(`replaceText: "${newValue}"`);
+          updateFiles(findText, newValue);
+        }}
+        onBlur={(event) => {
+          updateFiles(event.target.value!, replaceText);
           setCanSubmit(true);
         }}
       />
